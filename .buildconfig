@@ -1,0 +1,10 @@
+[default]
+name=Default
+runtime=host
+config-opts=
+run-opts=
+prefix=/home/carlo/.cache/gnome-builder/install/pedibus_app/host
+app-id=
+postbuild=
+prebuild=
+default=true
