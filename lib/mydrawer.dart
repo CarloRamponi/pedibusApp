@@ -19,7 +19,7 @@ class MyDrawer extends Drawer {
             onTap: () {
               Navigator.of(context).pop();
               if(pageIndex != 0)
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (context) => new MyHomePage())
                 );
             },
@@ -30,7 +30,7 @@ class MyDrawer extends Drawer {
             onTap: () {
               Navigator.of(context).pop();
               if(pageIndex != 1)
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (context) => new LineePage())
                 );
             },
