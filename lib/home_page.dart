@@ -19,16 +19,13 @@ class _MyHomePageState extends State<MyHomePage> {
         title: new Text(widget.title),
       ),
       body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
-              'Riga 1',
-            ),
-            new Text(
-              'Riga 2',
-            ),
-          ],
+        child: new Container(
+          margin: const EdgeInsets.all(15.0),
+          child: new Text(
+            'Pedibus App!',
+            textAlign: TextAlign.center,
+            style: new TextStyle(fontSize: 30.0),
+          ),
         ),
       ),
       drawer: new MyDrawer(0, context),

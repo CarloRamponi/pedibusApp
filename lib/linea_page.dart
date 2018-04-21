@@ -55,15 +55,17 @@ class _LineaPageState extends State<LineaPage> {
           new Padding(
               padding: new EdgeInsets.all(20.0),
               child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['ita-IT']['codice'] + "'"),
+                future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['ita-IT']['codice'] + "' and data range [today, *]"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
 
                     List<Widget> list = new List(snapshot.data['totalCount']);
 
                     for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                      DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                      String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
                       list[i] = new ListTile(
-                        title: new Text(snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'] + " assente il " + snapshot.data['searchHits'][i]['data']['ita-IT']['data']),
+                        title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + volontario ),
                       );
                     }
 
@@ -92,11 +94,38 @@ class _LineaPageState extends State<LineaPage> {
           'Assenze bambini',
           new Padding(
               padding: new EdgeInsets.all(20.0),
-              child: new Column(
-                  children: <Widget>[
-                    new Text("Le assenze dei bambini")
-                  ]
-              )
+              child: new FutureBuilder<Map<String, dynamic>>(
+                future: Query.query("classes [assenza_bambino] and linea.codice = '" + data['ita-IT']['codice'] + "' and data range [today, *]"),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+
+                    List<Widget> list = new List(snapshot.data['totalCount']);
+
+                    for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                      DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                      String bambino = snapshot.data['searchHits'][i]['data']['ita-IT']['bambino'][0]['name']['ita-IT'];
+                      list[i] = new ListTile(
+                        title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + bambino ),
+                      );
+                    }
+
+                    return new Column(
+                      children: list,
+                    );
+
+                  } else if (snapshot.hasError) {
+
+                    return new Center(
+                      child: new Text("${snapshot.error}")
+                    );
+
+                  }
+
+                  return new Center (
+                  child: new CircularProgressIndicator(),
+                  );
+                },
+              ),
           ),
           new Icon(Icons.event_busy)
       ),

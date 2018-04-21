@@ -32,6 +32,7 @@ class _LineePageState extends State<LineePage> {
 
             for(int i = 0; i < snapshot.data['totalCount']; i++) {
               list[i] = new ListTile(
+                leading: new Icon(Icons.map),
                 title: new Text(snapshot.data['searchHits'][i]['data']['ita-IT']['nome']),
                 onTap: () {
                   Navigator.of(context).push(
