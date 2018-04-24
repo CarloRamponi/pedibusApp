@@ -35,6 +35,12 @@ class MyDrawer extends Drawer {
                 );
             },
           ),
+          new AboutListTile(
+            applicationName: 'Pedibus App',
+            applicationVersion: '0.1',
+            applicationLegalese: 'App created by Carlo Ramponi\nIf you steal my code i will kill you.',
+            //TODO icona dell'app
+          )
         ],
       )
   );

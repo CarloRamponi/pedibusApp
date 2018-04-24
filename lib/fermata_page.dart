@@ -35,10 +35,8 @@ class _FermataPageState extends State<FermataPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
 
-            String address;
             double lat, lng;
 
-            address = snapshot.data['searchHits'][0]['data']['ita-IT']['geo']['address'];
             lat = snapshot.data['searchHits'][0]['data']['ita-IT']['geo']['latitude'];
             lng = snapshot.data['searchHits'][0]['data']['ita-IT']['geo']['longitude'];
 
