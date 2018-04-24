@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pedibus_app/fermata_page.dart';
 import 'package:pedibus_app/query.dart';
 
 class LineaPage extends StatefulWidget {
@@ -33,7 +34,15 @@ class _LineaPageState extends State<LineaPage> {
     for(int i = 0; i < data['ita-IT']['fermate'].length; i++){
       _fermate[i] = new ListTile(
           leading: new Icon(Icons.place),
-          title: new Text(data['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0])
+          title: new Text(data['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0]),
+          onTap: () {
+            Navigator.of(context).push(
+                new MaterialPageRoute(builder: (context) => new FermataPage(
+                  name: data['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0],
+                  id: data['ita-IT']['fermate'][i]['id'],
+                ))
+            );
+          },
       );
     }
 
@@ -59,14 +68,19 @@ class _LineaPageState extends State<LineaPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
 
-                    List<Widget> list = new List(snapshot.data['totalCount']);
+                    List<Widget> list;
 
-                    for(int i = 0; i < snapshot.data['totalCount']; i++) {
-                      DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
-                      String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
-                      list[i] = new ListTile(
-                        title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + volontario ),
-                      );
+                    if(snapshot.data['totalCount'] == 0) {
+                      list = <Widget>[new Text("Nessuna assenza futura")];
+                    } else {
+                      list = new List(snapshot.data['totalCount']);
+                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                        DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                        String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
+                        list[i] = new ListTile(
+                          title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + volontario ),
+                        );
+                      }
                     }
 
                     return new Column(
@@ -99,14 +113,20 @@ class _LineaPageState extends State<LineaPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
 
-                    List<Widget> list = new List(snapshot.data['totalCount']);
+                    List<Widget> list;
 
-                    for(int i = 0; i < snapshot.data['totalCount']; i++) {
-                      DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
-                      String bambino = snapshot.data['searchHits'][i]['data']['ita-IT']['bambino'][0]['name']['ita-IT'];
-                      list[i] = new ListTile(
-                        title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + bambino ),
-                      );
+                    if(snapshot.data['totalCount'] == 0) {
+                      list = <Widget>[new Text("Nessuna assenza futura")];
+                    } else {
+                      list = new List(snapshot.data['totalCount']);
+
+                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                        DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                        String bambino = snapshot.data['searchHits'][i]['data']['ita-IT']['bambino'][0]['name']['ita-IT'];
+                        list[i] = new ListTile(
+                          title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + bambino ),
+                        );
+                      }
                     }
 
                     return new Column(
