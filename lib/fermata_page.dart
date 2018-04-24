@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
 import 'package:pedibus_app/query.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class FermataPage extends StatefulWidget {
 
@@ -40,18 +42,31 @@ class _FermataPageState extends State<FermataPage> {
             lat = snapshot.data['searchHits'][0]['data']['ita-IT']['geo']['latitude'];
             lng = snapshot.data['searchHits'][0]['data']['ita-IT']['geo']['longitude'];
 
-            return new Container(
-                margin: const EdgeInsets.all(15.0),
-                child: new ListView(
-                  children: <Widget>[
-                    new Text("Lat: " + lat.toString() + "\tLng: " + lng.toString()),
-                    new Text(
-                      address,
-                      textAlign: TextAlign.center,
-                      style: new TextStyle(fontSize: 18.0),
+            return new FlutterMap(
+              options: new MapOptions(
+                center: new LatLng(lat, lng),
+                zoom: 16.0,
+              ),
+              layers: [
+                new TileLayerOptions(
+                  urlTemplate: "https://api.tiles.mapbox.com/v4/"
+                      "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                  additionalOptions: {
+                    'accessToken': 'pk.eyJ1IjoiY2FybG9yIiwiYSI6ImNqZ2Uwdm9oeDAxYXgycW1veHgxZzkwamQifQ.O6a4ZlVGXdFPQU5X08QvUQ',
+                    'id': 'mapbox.streets',
+                  },
+                ),
+                new MarkerLayerOptions(
+                  markers: [
+                    new Marker(
+                      point: new LatLng(lat, lng),
+                      builder: (ctx) => new Container(
+                        child: new Icon(Icons.location_on),
+                      ),
                     ),
                   ],
                 ),
+              ],
             );
 
           } else if (snapshot.hasError) {
