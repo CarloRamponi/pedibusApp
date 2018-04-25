@@ -39,7 +39,7 @@ class MyDrawer extends Drawer {
             applicationName: 'Pedibus App',
             applicationVersion: '0.1',
             applicationLegalese: 'App created by Carlo Ramponi\nIf you steal my code i will kill you.',
-            applicationIcon: new ImageIcon(new AssetImage("resources/logo.png")),
+            applicationIcon: new Image(image: new AssetImage("resources/logo.png"), height: 80.0, width: 80.0),
             icon: new ImageIcon(new AssetImage("resources/logo.png")),
           )
         ],
