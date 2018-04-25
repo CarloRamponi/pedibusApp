@@ -47,8 +47,7 @@ class _FermataPageState extends State<FermataPage> {
               ),
               layers: [
                 new TileLayerOptions(
-                  urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                      "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+                  urlTemplate: "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
                   additionalOptions: {
                     'accessToken': 'pk.eyJ1IjoiY2FybG9yIiwiYSI6ImNqZ2Uwdm9oeDAxYXgycW1veHgxZzkwamQifQ.O6a4ZlVGXdFPQU5X08QvUQ',
                     'id': 'mapbox.streets',

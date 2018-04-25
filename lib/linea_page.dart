@@ -29,17 +29,17 @@ class _LineaPageState extends State<LineaPage> {
 
   _LineaPageState(Map<String, dynamic> data) {
 
-    List<Widget> _fermate = new List<Widget>(data['ita-IT']['fermate'].length);
+    List<Widget> _fermate = new List<Widget>(data['data']['ita-IT']['fermate'].length);
 
-    for(int i = 0; i < data['ita-IT']['fermate'].length; i++){
+    for(int i = 0; i < data['data']['ita-IT']['fermate'].length; i++){
       _fermate[i] = new ListTile(
           leading: new Icon(Icons.place),
-          title: new Text(data['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0]),
+          title: new Text(data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0]),
           onTap: () {
             Navigator.of(context).push(
                 new MaterialPageRoute(builder: (context) => new FermataPage(
-                  name: data['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0],
-                  id: data['ita-IT']['fermate'][i]['id'],
+                  name: data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0],
+                  id: data['data']['ita-IT']['fermate'][i]['id'],
                 ))
             );
           },
@@ -64,7 +64,7 @@ class _LineaPageState extends State<LineaPage> {
           new Padding(
               padding: new EdgeInsets.all(20.0),
               child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['ita-IT']['codice'] + "' and data range [today, *]"),
+                future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
 
@@ -109,7 +109,7 @@ class _LineaPageState extends State<LineaPage> {
           new Padding(
               padding: new EdgeInsets.all(20.0),
               child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [assenza_bambino] and linea.codice = '" + data['ita-IT']['codice'] + "' and data range [today, *]"),
+                future: Query.query("classes [assenza_bambino] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
 
@@ -148,8 +148,55 @@ class _LineaPageState extends State<LineaPage> {
               ),
           ),
           new Icon(Icons.event_busy)
-      ),
-    ];
+        ),
+          new MyExpansionPanelItem(
+            false,
+            'Volontari',
+            new Padding(
+              padding: new EdgeInsets.all(20.0),
+              child: new FutureBuilder<Map<String, dynamic>>(
+                future: Query.query("classes [disponibilita] and linea.id = '" + data['metadata']['id'].toString() + "' and dal range [*, now] and al range [now, *]"),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+
+                    List<Widget> list;
+
+                    if(snapshot.data['totalCount'] == 0) {
+                      list = <Widget>[new Text("Nessuna volontario per questa linea")];
+                    } else {
+                      list = new List(snapshot.data['totalCount']);
+
+                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                        String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
+                        list[i] = new ListTile(
+                          leading: new Icon(Icons.face),
+                          title: new Text(volontario),
+                          //TODO volotario_page
+                        );
+                      }
+                    }
+
+                    return new Column(
+                      children: list,
+                    );
+
+                  } else if (snapshot.hasError) {
+
+                    return new Center(
+                     child: new Text("${snapshot.error}")
+                    );
+
+                  }
+
+                  return new Center (
+                    child: new CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ),
+            new Icon(Icons.people),
+          )
+      ];
 
   }
 
