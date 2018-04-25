@@ -15,193 +15,35 @@ class LineaPage extends StatefulWidget {
 
 }
 
-class MyExpansionPanelItem {
-  bool isExpanded;
-  final String header;
-  final Widget body;
-  final Icon iconpic;
-  MyExpansionPanelItem(this.isExpanded, this.header, this.body, this.iconpic);
-}
-
 class _LineaPageState extends State<LineaPage> {
 
-  List<MyExpansionPanelItem> _items;
+  List<bool> _items = new List<bool>(4);
+  Map<String, dynamic> data;
 
-  _LineaPageState(Map<String, dynamic> data) {
+  _LineaPageState(Map<String, dynamic> data): data = data {
+    for(int i = 0; i < 4; i++)
+      _items[i] = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     List<Widget> _fermate = new List<Widget>(data['data']['ita-IT']['fermate'].length);
 
     for(int i = 0; i < data['data']['ita-IT']['fermate'].length; i++){
       _fermate[i] = new ListTile(
-          leading: new Icon(Icons.place),
-          title: new Text(data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0]),
-          onTap: () {
-            Navigator.of(context).push(
-                new MaterialPageRoute(builder: (context) => new FermataPage(
-                  name: data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0],
-                  id: data['data']['ita-IT']['fermate'][i]['id'],
-                ))
-            );
-          },
+        leading: new Icon(Icons.place),
+        title: new Text(data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0]),
+        onTap: () {
+          Navigator.of(context).push(
+              new MaterialPageRoute(builder: (context) => new FermataPage(
+                name: data['data']['ita-IT']['fermate'][i]['name']['ita-IT'].split("(")[0],
+                id: data['data']['ita-IT']['fermate'][i]['id'],
+              ))
+          );
+        },
       );
     }
-
-    _items = <MyExpansionPanelItem>[
-      new MyExpansionPanelItem(
-          false,
-          'Fermate',
-          new Padding(
-              padding: new EdgeInsets.all(20.0),
-              child: new Column(
-                  children: _fermate,
-              ),
-          ),
-          new Icon(Icons.map)
-      ),
-      new MyExpansionPanelItem(
-          false,
-          'Assenze volontari',
-          new Padding(
-              padding: new EdgeInsets.all(20.0),
-              child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-
-                    List<Widget> list;
-
-                    if(snapshot.data['totalCount'] == 0) {
-                      list = <Widget>[new Text("Nessuna assenza futura")];
-                    } else {
-                      list = new List(snapshot.data['totalCount']);
-                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
-                        DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
-                        String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
-                        list[i] = new ListTile(
-                          title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + volontario ),
-                        );
-                      }
-                    }
-
-                    return new Column(
-                      children: list,
-                    );
-
-                  } else if (snapshot.hasError) {
-
-                    return new Center(
-                        child: new Text("${snapshot.error}")
-                    );
-
-                  }
-
-                  return new Center (
-                    child: new CircularProgressIndicator(),
-                  );
-                },
-              ),
-          ),
-          new Icon(Icons.event_busy)
-      ),
-      new MyExpansionPanelItem(
-          false,
-          'Assenze bambini',
-          new Padding(
-              padding: new EdgeInsets.all(20.0),
-              child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [assenza_bambino] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-
-                    List<Widget> list;
-
-                    if(snapshot.data['totalCount'] == 0) {
-                      list = <Widget>[new Text("Nessuna assenza futura")];
-                    } else {
-                      list = new List(snapshot.data['totalCount']);
-
-                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
-                        DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
-                        String bambino = snapshot.data['searchHits'][i]['data']['ita-IT']['bambino'][0]['name']['ita-IT'];
-                        list[i] = new ListTile(
-                          title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + bambino ),
-                        );
-                      }
-                    }
-
-                    return new Column(
-                      children: list,
-                    );
-
-                  } else if (snapshot.hasError) {
-
-                    return new Center(
-                      child: new Text("${snapshot.error}")
-                    );
-
-                  }
-
-                  return new Center (
-                  child: new CircularProgressIndicator(),
-                  );
-                },
-              ),
-          ),
-          new Icon(Icons.event_busy)
-        ),
-          new MyExpansionPanelItem(
-            false,
-            'Volontari',
-            new Padding(
-              padding: new EdgeInsets.all(20.0),
-              child: new FutureBuilder<Map<String, dynamic>>(
-                future: Query.query("classes [disponibilita] and linea.id = '" + data['metadata']['id'].toString() + "' and dal range [*, now] and al range [now, *]"),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-
-                    List<Widget> list;
-
-                    if(snapshot.data['totalCount'] == 0) {
-                      list = <Widget>[new Text("Nessuna volontario per questa linea")];
-                    } else {
-                      list = new List(snapshot.data['totalCount']);
-
-                      for(int i = 0; i < snapshot.data['totalCount']; i++) {
-                        String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
-                        list[i] = new ListTile(
-                          leading: new Icon(Icons.face),
-                          title: new Text(volontario),
-                          //TODO volotario_page
-                        );
-                      }
-                    }
-
-                    return new Column(
-                      children: list,
-                    );
-
-                  } else if (snapshot.hasError) {
-
-                    return new Center(
-                     child: new Text("${snapshot.error}")
-                    );
-
-                  }
-
-                  return new Center (
-                    child: new CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-            new Icon(Icons.people),
-          )
-      ];
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
 
     return new Scaffold(
       appBar: new AppBar(
@@ -212,21 +54,176 @@ class _LineaPageState extends State<LineaPage> {
           new ExpansionPanelList(
             expansionCallback: (int index, bool isExpanded) {
               setState(() {
-                _items[index].isExpanded = !_items[index].isExpanded;
+                _items[index] = !_items[index];
               });
             },
-            children: _items.map((MyExpansionPanelItem item) {
-              return new ExpansionPanel(
+            children: <ExpansionPanel> [
+              new ExpansionPanel(
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return new ListTile(
-                      leading: item.iconpic,
-                      title: new Text(item.header)
+                      leading: new Icon(Icons.map),
+                      title: new Text('Fermate'),
                   );
                 },
-                isExpanded: item.isExpanded,
-                body: item.body,
-              );
-            }).toList(),
+                isExpanded: _items[0],
+                body: new Padding(
+                  padding: new EdgeInsets.all(20.0),
+                  child: new Column(
+                    children: _fermate,
+                  ),
+                ),
+              ),
+              new ExpansionPanel(
+                isExpanded: _items[1],
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return new ListTile(
+                    leading: new Icon(Icons.event_busy),
+                    title: new Text('Assenze volontari'),
+                  );
+                },
+                body: new Padding(
+                  padding: new EdgeInsets.all(20.0),
+                  child: new FutureBuilder<Map<String, dynamic>>(
+                    future: Query.query("classes [assenza_volontario] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+
+                        List<Widget> list;
+
+                        if(snapshot.data['totalCount'] == 0) {
+                          list = <Widget>[new Text("Nessuna assenza futura")];
+                        } else {
+                          list = new List(snapshot.data['totalCount']);
+                          for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                            DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                            String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
+                            list[i] = new ListTile(
+                              title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + volontario ),
+                            );
+                          }
+                        }
+
+                        return new Column(
+                          children: list,
+                        );
+
+                      } else if (snapshot.hasError) {
+
+                        return new Center(
+                            child: new Text("${snapshot.error}")
+                        );
+
+                      }
+
+                      return new Center (
+                        child: new CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              new ExpansionPanel(
+                isExpanded: _items[2],
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return new ListTile(
+                    leading: new Icon(Icons.event_busy),
+                    title: new Text('Assenze bambini'),
+                  );
+                },
+                body: new Padding(
+                  padding: new EdgeInsets.all(20.0),
+                  child: new FutureBuilder<Map<String, dynamic>>(
+                    future: Query.query("classes [assenza_bambino] and linea.codice = '" + data['data']['ita-IT']['codice'] + "' and data range [today, *]"),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+
+                        List<Widget> list;
+
+                        if(snapshot.data['totalCount'] == 0) {
+                          list = <Widget>[new Text("Nessuna assenza futura")];
+                        } else {
+                          list = new List(snapshot.data['totalCount']);
+
+                          for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                            DateTime giorno = DateTime.parse(snapshot.data['searchHits'][i]['data']['ita-IT']['data']).toLocal();
+                            String bambino = snapshot.data['searchHits'][i]['data']['ita-IT']['bambino'][0]['name']['ita-IT'];
+                            list[i] = new ListTile(
+                              title: new Text(giorno.day.toString() + "/" + giorno.month.toString() + "/" + giorno.year.toString() + " → " + bambino ),
+                            );
+                          }
+                        }
+
+                        return new Column(
+                          children: list,
+                        );
+
+                      } else if (snapshot.hasError) {
+
+                        return new Center(
+                            child: new Text("${snapshot.error}")
+                        );
+
+                      }
+
+                      return new Center (
+                        child: new CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              new ExpansionPanel(
+                isExpanded: _items[3],
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return new ListTile(
+                    leading: new Icon(Icons.people),
+                    title: new Text('Volontari'),
+                  );
+                },
+                body: new Padding(
+                  padding: new EdgeInsets.all(20.0),
+                  child: new FutureBuilder<Map<String, dynamic>>(
+                    future: Query.query("classes [disponibilita] and linea.id = '" + data['metadata']['id'].toString() + "' and dal range [*, now] and al range [now, *]"),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+
+                        List<Widget> list;
+
+                        if(snapshot.data['totalCount'] == 0) {
+                          list = <Widget>[new Text("Nessuna volontario per questa linea")];
+                        } else {
+                          list = new List(snapshot.data['totalCount']);
+
+                          for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                            String volontario = snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'];
+                            list[i] = new ListTile(
+                              leading: new Icon(Icons.face),
+                              title: new Text(volontario),
+                              //TODO volotario_page
+                            );
+                          }
+                        }
+
+                        return new Column(
+                          children: list,
+                        );
+
+                      } else if (snapshot.hasError) {
+
+                        return new Center(
+                            child: new Text("${snapshot.error}")
+                        );
+
+                      }
+
+                      return new Center (
+                        child: new CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ]
           ),
         ],
       ),
