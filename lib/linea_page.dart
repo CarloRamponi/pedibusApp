@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pedibus_app/fermata_page.dart';
 import 'package:pedibus_app/query.dart';
+import 'package:pedibus_app/volontario_page.dart';
 
 class LineaPage extends StatefulWidget {
 
@@ -199,7 +200,15 @@ class _LineaPageState extends State<LineaPage> {
                             list[i] = new ListTile(
                               leading: new Icon(Icons.face),
                               title: new Text(volontario),
-                              //TODO volotario_page
+                              onTap: () {
+                                Navigator.of(context).push(
+                                    new MaterialPageRoute(builder: (context) =>
+                                    new VolontarioPage(
+                                      name: snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'],
+                                      id: snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['id'],
+                                    ))
+                                );
+                              },
                             );
                           }
                         }
