@@ -62,6 +62,79 @@ class _VolontarioPageState extends State<VolontarioPage> {
                   leading: new Icon(Icons.map),
                   title: new Text(address == null ? "Mancante" : address),
                 ),
+                new ListTile(
+                  leading: new Icon(Icons.calendar_today),
+                  title: new Text("Disponibilità"),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return new BottomSheet(
+                          builder: (context) {
+                            return new FutureBuilder<Map<String, dynamic>>(
+                              future: Query.query("classes [disponibilita] and volontario.id = '" + id.toString() + "' and dal range [*, now] and al range [now, *]"),
+                              builder: (context, snapshot) {
+
+                                List<Widget> list;
+
+                                if(snapshot.hasData) {
+
+                                  if(snapshot.data['totalCount'] == 0) {
+                                    list = <Widget>[new Text("Attualmente nessuna disponibilita")];
+                                  } else {
+                                    list = new List(snapshot.data['totalCount']*2);
+
+                                    for(int i = 0; i < snapshot.data['totalCount']; i++) {
+                                      String linea = snapshot.data['searchHits'][i]['data']['ita-IT']['linea'][0]['name']['ita-IT'];
+
+                                      list[2*i] = new ListTile(
+                                        leading: new Icon(Icons.map),
+                                        title: new Text(linea),
+                                      );
+
+                                      List<Widget> listaGiorni = new List(snapshot.data['searchHits'][i]['data']['ita-IT']['giorno'].length);
+
+                                      for(int j=0; j < snapshot.data['searchHits'][i]['data']['ita-IT']['giorno'].length; j++){
+                                        listaGiorni[j] = new ListTile(
+                                          leading: new Icon(Icons.calendar_today),
+                                          title: new Text(snapshot.data['searchHits'][i]['data']['ita-IT']['giorno'][j]['name']['ita-IT']),
+                                        );
+                                      }
+
+                                      list[2*i+1] = new Container(
+                                        child: new Column(
+                                          children: listaGiorni,
+                                        ),
+                                        margin: new EdgeInsets.only(left: 20.0),
+                                      );
+                                    }
+                                  }
+
+                                  return new ListView(
+                                    children: list,
+                                  );
+
+                                } else {
+                                  if(snapshot.hasError) {
+                                    return new Center(
+                                        child: new Text("${snapshot.error}")
+                                    );
+                                  }
+                                }
+
+                                return new Center (
+                                  child: new CircularProgressIndicator(),
+                                );
+
+                              }
+                            );
+                          },
+                          onClosing: () {},
+                        );
+                      },
+                    );
+                  }
+                )
               ],
             );
 

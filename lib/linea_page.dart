@@ -202,8 +202,7 @@ class _LineaPageState extends State<LineaPage> {
                               title: new Text(volontario),
                               onTap: () {
                                 Navigator.of(context).push(
-                                    new MaterialPageRoute(builder: (context) =>
-                                    new VolontarioPage(
+                                    new MaterialPageRoute(builder: (context) => new VolontarioPage(
                                       name: snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['name']['ita-IT'],
                                       id: snapshot.data['searchHits'][i]['data']['ita-IT']['volontario'][0]['id'],
                                     ))

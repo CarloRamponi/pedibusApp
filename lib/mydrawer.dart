@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedibus_app/linee_page.dart';
+import 'package:pedibus_app/volontari_page.dart';
 
 class MyDrawer extends Drawer {
   MyDrawer(int pageIndex, BuildContext context) : super(
@@ -20,6 +21,17 @@ class MyDrawer extends Drawer {
               if(pageIndex != 0)
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (context) => new LineePage())
+                );
+            },
+          ),
+          new ListTile(
+            leading: const Icon(Icons.people),
+            title: const Text('Volontari'),
+            onTap: () {
+              Navigator.of(context).pop();
+              if(pageIndex != 1)
+                Navigator.of(context).pushReplacement(
+                    new MaterialPageRoute(builder: (context) => new VolontariPage())
                 );
             },
           ),
