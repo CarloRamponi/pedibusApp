@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pedibus_app/linea_page.dart';
 import 'package:pedibus_app/mydrawer.dart';
 import 'package:pedibus_app/query.dart';
 import 'package:pedibus_app/volontario_page.dart';

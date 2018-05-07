@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pedibus_app/calendario_volontario_page.dart';
 import 'package:pedibus_app/query.dart';
 
 class VolontarioPage extends StatefulWidget {
@@ -37,15 +38,15 @@ class _VolontarioPageState extends State<VolontarioPage> {
             String address = snapshot.data['searchHits'][0]['data']['ita-IT']['indirizzo'];
             String telefono = snapshot.data['searchHits'][0]['data']['ita-IT']['telefono'];
             String email = snapshot.data['searchHits'][0]['data']['ita-IT']['email'];
-            String iniziali = snapshot.data['searchHits'][0]['data']['ita-IT']['nome'][0] + snapshot.data['searchHits'][0]['data']['ita-IT']['cognome'][0];
+            //String iniziali = snapshot.data['searchHits'][0]['data']['ita-IT']['nome'][0] + snapshot.data['searchHits'][0]['data']['ita-IT']['cognome'][0];
 
             return new ListView(
               padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
               children: <Widget>[
-                new CircleAvatar(
+                /*new CircleAvatar(
                   child: new Text(iniziali, style: new TextStyle(fontSize: 50.0),),
                   radius: 80.0,
-                ),
+                ),*/
                 new ListTile(
                   leading: new Icon(Icons.account_circle),
                   title: new Text(name == null ? "Mancante" : name),
@@ -63,7 +64,7 @@ class _VolontarioPageState extends State<VolontarioPage> {
                   title: new Text(address == null ? "Mancante" : address),
                 ),
                 new ListTile(
-                  leading: new Icon(Icons.calendar_today),
+                  leading: new Icon(Icons.assignment_ind),
                   title: new Text("Disponibilità"),
                   onTap: () {
                     showModalBottomSheet(
@@ -134,7 +135,20 @@ class _VolontarioPageState extends State<VolontarioPage> {
                       },
                     );
                   }
-                )
+                ),
+                new ListTile(
+                    leading: new Icon(Icons.calendar_today),
+                    title: new Text("Calendario"),
+                    onTap: () {
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(builder: (context) => new CalendarioVolontarioPage(
+                            name: name,
+                            id: id
+                          ))
+                      );
+                    }
+                ),
+
               ],
             );
 
