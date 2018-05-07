@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pedibus_app/home_page.dart';
+import 'package:pedibus_app/linee_page.dart';
 
 MyApp app;
 
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: new MyHomePage(),
+      home: new LineePage(),
     );
   }
 }

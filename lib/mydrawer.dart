@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedibus_app/home_page.dart';
 import 'package:pedibus_app/linee_page.dart';
 
 class MyDrawer extends Drawer {
@@ -14,22 +13,11 @@ class MyDrawer extends Drawer {
             ),
           ),
           new ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.of(context).pop();
-              if(pageIndex != 0)
-                Navigator.of(context).pushReplacement(
-                    new MaterialPageRoute(builder: (context) => new MyHomePage())
-                );
-            },
-          ),
-          new ListTile(
             leading: const Icon(Icons.directions),
             title: const Text('Linee'),
             onTap: () {
               Navigator.of(context).pop();
-              if(pageIndex != 1)
+              if(pageIndex != 0)
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (context) => new LineePage())
                 );

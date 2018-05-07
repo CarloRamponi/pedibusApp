@@ -62,7 +62,7 @@ class _LineePageState extends State<LineePage> {
           );
         },
       ),
-      drawer: new MyDrawer(1, context),
+      drawer: new MyDrawer(0, context),
     );
   }
 }
