@@ -34,6 +34,18 @@ class _BambinoPageState extends State<BambinoPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
 
+            if(snapshot.data['totalCount'] == 0){
+
+              return new Center(
+                child: new Text(
+                  'Il bambino non è iscritto\na nessuna linea!',
+                  style: new TextStyle(fontSize: 20.0),
+                  textAlign: TextAlign.center,
+                ),
+              );
+
+            }
+
             List<Widget> elementiLista = new List();
 
             for(int i = 0; i < snapshot.data['totalCount']; i++){
@@ -42,6 +54,14 @@ class _BambinoPageState extends State<BambinoPage> {
                   new ListTile(
                     leading: new Icon(Icons.map),
                     title: new Text(snapshot.data['searchHits'][i]['data']['ita-IT']['linea'][j]['name']['ita-IT']),
+                    onTap: (){
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(builder: (context) => new LineaPage(
+                            title: snapshot.data['searchHits'][i]['data']['ita-IT']['linea'][j]['name']['ita-IT'],
+                            id: snapshot.data['searchHits'][i]['data']['ita-IT']['linea'][j]['id'],
+                          ))
+                      );
+                    },
                   ),
                 );
               }
