@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedibus_app/genitori_page.dart';
 import 'package:pedibus_app/linee_page.dart';
 import 'package:pedibus_app/volontari_page.dart';
 
@@ -33,6 +34,17 @@ class MyDrawer extends Drawer {
                 Navigator.of(context).pushReplacement(
                     new MaterialPageRoute(builder: (context) => new VolontariPage())
                 );
+            },
+          ),
+          new ListTile(
+            leading: const Icon(Icons.people),
+            title: const Text('Genitori'),
+            onTap: () {
+              Navigator.of(context).pop();
+              if(pageIndex != 2)
+              Navigator.of(context).pushReplacement(
+              new MaterialPageRoute(builder: (context) => new GenitoriPage())
+              );
             },
           ),
           new AboutListTile(
