@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pedibus_app/bambino_page.dart';
 import 'package:pedibus_app/query.dart';
 
 class GenitorePage extends StatefulWidget {
@@ -67,6 +68,14 @@ class _GenitorePageState extends State<GenitorePage> {
               elementiLista.add(new ListTile(
                 leading: new Icon(Icons.face),
                 title: new Text(snapshot.data['searchHits'][0]['data']['ita-IT']['figli'][i]['name']['ita-IT']),
+                onTap: () {
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => new BambinoPage(
+                        name: snapshot.data['searchHits'][0]['data']['ita-IT']['figli'][i]['name']['ita-IT'],
+                        id: snapshot.data['searchHits'][0]['data']['ita-IT']['figli'][i]['id'],
+                      ))
+                  );
+                },
               ));
             }
 

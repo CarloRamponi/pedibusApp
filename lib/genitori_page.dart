@@ -7,7 +7,7 @@ import 'package:pedibus_app/query.dart';
 class GenitoriPage extends StatefulWidget {
 
   GenitoriPage({Key key}) : super(key: key);
-  final String title = "Volontari";
+  final String title = "Genitori";
 
   @override
   _GenitoriPageState createState() => new _GenitoriPageState();
