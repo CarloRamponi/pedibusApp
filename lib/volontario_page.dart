@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pedibus_app/calendario_volontario_page.dart';
 import 'package:pedibus_app/query.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class VolontarioPage extends StatefulWidget {
 
@@ -54,10 +55,18 @@ class _VolontarioPageState extends State<VolontarioPage> {
                 new ListTile(
                   leading: new Icon(Icons.phone),
                   title: new Text(telefono == null ? "Mancante" : telefono),
+                  onTap: () {
+                    if (telefono != null)
+                      launch("tel:" + telefono);
+                  }
                 ),
                 new ListTile(
                   leading: new Icon(Icons.email),
                   title: new Text(email == null ? "Mancante" : email),
+                  onTap: () {
+                    if (email != null)
+                      launch("mailto:" + email);
+                  }
                 ),
                 new ListTile(
                   leading: new Icon(Icons.map),
