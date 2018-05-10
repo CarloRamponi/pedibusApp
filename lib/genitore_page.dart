@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pedibus_app/bambino_page.dart';
 import 'package:pedibus_app/query.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GenitorePage extends StatefulWidget {
-
   final int id;
   final String name;
 
@@ -12,7 +12,6 @@ class GenitorePage extends StatefulWidget {
 
   @override
   _GenitorePageState createState() => new _GenitorePageState(id, name);
-
 }
 
 class _GenitorePageState extends State<GenitorePage> {
@@ -52,10 +51,18 @@ class _GenitorePageState extends State<GenitorePage> {
               new ListTile(
                 leading: new Icon(Icons.phone),
                 title: new Text(telefono == null ? "Mancante" : telefono),
+                onTap: () {
+                  if (telefono != null)
+                    launch("tel:" + telefono);
+                }
               ),
               new ListTile(
                 leading: new Icon(Icons.email),
                 title: new Text(email == null ? "Mancante" : email),
+                onTap: () {
+                  if (email != null)
+                    launch("mailto:" + email);
+                }
               ),
               new ListTile(
                 leading: new Icon(Icons.map),
