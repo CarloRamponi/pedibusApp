@@ -17,6 +17,7 @@ class MyDrawer extends Drawer {
           new ListTile(
             leading: const Icon(Icons.directions),
             title: const Text('Linee'),
+            selected: pageIndex == 0,
             onTap: () {
               Navigator.of(context).pop();
               if(pageIndex != 0)
@@ -28,6 +29,7 @@ class MyDrawer extends Drawer {
           new ListTile(
             leading: const Icon(Icons.people),
             title: const Text('Volontari'),
+            selected: pageIndex == 1,
             onTap: () {
               Navigator.of(context).pop();
               if(pageIndex != 1)
@@ -39,6 +41,7 @@ class MyDrawer extends Drawer {
           new ListTile(
             leading: const Icon(Icons.people),
             title: const Text('Genitori'),
+            selected: pageIndex == 2,
             onTap: () {
               Navigator.of(context).pop();
               if(pageIndex != 2)
