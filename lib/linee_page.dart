@@ -38,7 +38,7 @@ class _LineePageState extends State<LineePage> {
                   Navigator.of(context).push(
                       new MaterialPageRoute(builder: (context) => new LineaPage(
                         title: snapshot.data['searchHits'][i]['data']['ita-IT']['nome'],
-                        data: snapshot.data['searchHits'][i],
+                        id: snapshot.data['searchHits'][i]['metadata']['id'],
                       ))
                   );
                 },
