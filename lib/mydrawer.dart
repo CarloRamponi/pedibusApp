@@ -53,7 +53,7 @@ class MyDrawer extends Drawer {
           new AboutListTile(
             applicationName: 'Pedibus App',
             applicationVersion: '0.1',
-            applicationLegalese: 'App created by Carlo Ramponi & Nicola Salsotto & Lorenzo Gebelin\nIf you steal our code we will kill you.',
+            applicationLegalese: 'App created by Carlo Ramponi & Nicola Salsotto & Lorenzo Gebelin & Stefano Genetti\nIf you steal our code we will kill you.',
             applicationIcon: new Image(image: new AssetImage("resources/logo.png"), height: 80.0, width: 80.0),
             icon: new ImageIcon(new AssetImage("resources/logo.png")),
           )
